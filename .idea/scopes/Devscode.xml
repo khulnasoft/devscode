@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Devscode" pattern="file[devscode-intellij-extension]:*/&amp;&amp;!file[devscode-intellij-extension]:binary/bin//*&amp;&amp;!file[devscode-intellij-extension]:binary/build//*&amp;&amp;!file[devscode-intellij-extension]:binary/out//*&amp;&amp;!file[devscode-intellij-extension]:gui/dist//*&amp;&amp;!file[devscode-intellij-extension]:extensions/intellij/build//*&amp;&amp;!file[devscode-intellij-extension]:extensions/vscode/bin//*&amp;&amp;!file[devscode-intellij-extension]:extensions/vscode/build//*&amp;&amp;!file[devscode-intellij-extension]:extensions/vscode/out//*" />
+</component>
