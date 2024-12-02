@@ -1,0 +1,175 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <id>com.github.khulnasoft.devscodeintellijextension</id>
+    <name>Devscode</name>
+    <vendor url="https://www.devscode.dev/">devscode-dev</vendor>
+    <change-notes>
+        <![CDATA[View the latest release notes on <a href="https://github.com/khulnasoft/devscode/releases">GitHub</a>]]></change-notes>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.json</depends>
+    <!-- com.intellij.openapi.module.ModuleManager.Companion is only available since this build -->
+    <idea-version since-build="223.7571.182"/>
+
+    <extensions defaultExtensionNs="JavaScript.JsonSchema">
+        <ProviderFactory
+                implementation="com.github.khulnasoft.devscodeintellijextension.devscode.ConfigJsonSchemaProviderFactory"/>
+    </extensions>
+        <extensions defaultExtensionNs="JavaScript.JsonSchema">
+        <ProviderFactory
+                implementation="com.github.khulnasoft.devscodeintellijextension.devscode.ConfigRcJsonSchemaProviderFactory"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <editorFactoryListener
+                implementation="com.github.khulnasoft.devscodeintellijextension.autocomplete.AutocompleteEditorListener"/>
+        <toolWindow id="Devscode" anchor="right" icon="/tool-window-icon.svg"
+                    factoryClass="com.github.khulnasoft.devscodeintellijextension.toolWindow.DevscodePluginToolWindowFactory"/>
+        <projectService id="DevscodePluginService"
+                        serviceImplementation="com.github.khulnasoft.devscodeintellijextension.services.DevscodePluginService"/>
+        <projectService
+                id="DiffStreamService"
+                serviceImplementation="com.github.khulnasoft.devscodeintellijextension.editor.DiffStreamService"/>
+        <projectService
+                id="AutocompleteLookupListener"
+                serviceImplementation="com.github.khulnasoft.devscodeintellijextension.autocomplete.AutocompleteLookupListener"/>
+        <statusBarWidgetFactory
+                implementation="com.github.khulnasoft.devscodeintellijextension.autocomplete.AutocompleteSpinnerWidgetFactory"
+                id="AutocompleteSpinnerWidget"/>
+        <notificationGroup id="Devscode"
+                           displayType="BALLOON"/>
+    </extensions>
+
+    <resource-bundle>messages.MyBundle</resource-bundle>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <postStartupActivity
+                implementation="com.github.khulnasoft.devscodeintellijextension.activities.DevscodePluginStartupActivity"/>
+        <applicationConfigurable
+                parentId="tools"
+                instance="com.github.khulnasoft.devscodeintellijextension.services.DevscodeExtensionConfigurable"
+                id="com.github.khulnasoft.devscodeintellijextension.services.DevscodeExtensionConfigurable"
+                displayName="Devscode"/>
+        <applicationService
+                serviceImplementation="com.github.khulnasoft.devscodeintellijextension.services.DevscodeExtensionSettings"/>
+    </extensions>
+
+    <actions>
+        <action class="com.github.khulnasoft.devscodeintellijextension.editor.InlineEditAction"
+                id="devscode.inlineEdit"
+                description="Inline Edit"
+                text="Inline Edit">
+            <keyboard-shortcut keymap="$default"
+                               first-keystroke="ctrl I"/>
+            <keyboard-shortcut keymap="Mac OS X"
+                               first-keystroke="meta I"/>
+            <override-text place="GoToAction" text="Devscode: Edit Code"/>
+        </action>
+
+        <action id="devscode.acceptDiff"
+                class="com.github.khulnasoft.devscodeintellijextension.actions.AcceptDiffAction"
+                text="Accept Diff" description="Accept Diff">
+            <keyboard-shortcut keymap="$default"
+                               first-keystroke="shift ctrl ENTER"/>
+            <keyboard-shortcut keymap="Mac OS X"
+                               first-keystroke="shift meta ENTER"/>
+            <override-text place="GoToAction" text="Devscode: Accept Diff"/>
+        </action>
+
+        <action id="devscode.rejectDiff"
+                class="com.github.khulnasoft.devscodeintellijextension.actions.RejectDiffAction"
+                text="Reject Diff" description="Reject Diff">
+            <keyboard-shortcut keymap="$default"
+                               first-keystroke="shift ctrl DELETE"/>
+            <keyboard-shortcut keymap="Mac OS X"
+                               first-keystroke="shift meta DELETE"/>
+            <override-text place="GoToAction" text="Devscode: Reject Diff"/>
+        </action>
+
+        <action id="devscode.acceptVerticalDiffBlock"
+                class="com.github.khulnasoft.devscodeintellijextension.actions.AcceptDiffAction"
+                text="Accept Diff" description="Accept Vertical Diff Block">
+            <keyboard-shortcut keymap="$default"
+                               first-keystroke="alt shift Y"/>
+            <keyboard-shortcut keymap="Mac OS X"
+                               first-keystroke="alt shift Y"/>
+            <override-text place="GoToAction" text="Devscode: Accept Vertical Diff Block"/>
+        </action>
+
+        <action id="devscode.rejectVerticalDiffBlock"
+                class="com.github.khulnasoft.devscodeintellijextension.actions.RejectDiffAction"
+                text="Reject Diff" description="Reject Vertical Diff Block">
+            <keyboard-shortcut keymap="$default"
+                               first-keystroke="alt shift N"/>
+            <keyboard-shortcut keymap="Mac OS X"
+                               first-keystroke="alt shift N"/>
+            <override-text place="GoToAction" text="Devscode: Reject Vertical Diff Block"/>
+        </action>
+
+        <action id="devscode.focusDevscodeInputWithoutClear"
+                class="com.github.khulnasoft.devscodeintellijextension.actions.FocusDevscodeInputWithoutClearAction"
+                text="Add selected code to context"
+                description="Focus Devscode Input With Edit">
+            <keyboard-shortcut keymap="$default"
+                               first-keystroke="ctrl shift J"/>
+            <keyboard-shortcut keymap="Mac OS X"
+                               first-keystroke="meta shift J"/>
+            <override-text place="GoToAction" text="Devscode: Add Highlighted Code to Context"/>
+        </action>
+
+        <action id="devscode.newDevscodeSession"
+                icon="AllIcons.General.Add"
+                class="com.github.khulnasoft.devscodeintellijextension.actions.NewDevscodeSessionAction"
+                text="Start New Devscode Session"
+                description="Start New Devscode Session">
+
+            <override-text place="GoToAction" text="Devscode: New Session"/>
+        </action>
+
+        <action id="devscode.viewHistory"
+                icon="AllIcons.Vcs.History"
+                class="com.github.khulnasoft.devscodeintellijextension.actions.ViewHistoryAction"
+                text="View History"
+                description="View History">
+            <override-text place="GoToAction" text="Devscode: View History"/>
+        </action>
+
+        <action id="devscode.focusDevscodeInput"
+                class="com.github.khulnasoft.devscodeintellijextension.actions.FocusDevscodeInputAction"
+                text="Add selected code to context"
+                description="Focus Devscode Input">
+            <keyboard-shortcut keymap="$default"
+                               first-keystroke="ctrl J"/>
+            <keyboard-shortcut keymap="Mac OS X"
+                               first-keystroke="meta J"/>
+            <add-to-group group-id="EditorPopupMenu"/>
+            <override-text place="GoToAction" text="Devscode: Add Highlighted Code to Context and Clear Chat"/>
+        </action>
+
+        <group id="DevscodeSidebarActionsGroup">
+            <reference ref="devscode.newDevscodeSession"/>
+            <reference ref="devscode.viewHistory"/>
+        </group>
+
+        <action id="com.github.khulnasoft.devscodeintellijextension.autocomplete.AcceptAutocompleteAction"
+                class="com.github.khulnasoft.devscodeintellijextension.autocomplete.AcceptAutocompleteAction"
+                text="Accept Autocomplete Suggestion" description="Accept Autocomplete Suggestion">
+            <keyboard-shortcut keymap="$default" first-keystroke="TAB"/>
+            <keyboard-shortcut keymap="Mac OS X" first-keystroke="TAB"/>
+        </action>
+
+        <action id="com.github.khulnasoft.devscodeintellijextension.autocomplete.CancelAutocompleteAction"
+                class="com.github.khulnasoft.devscodeintellijextension.autocomplete.CancelAutocompleteAction"
+                text="Cancel Autocomplete Suggestion" description="Cancel Autocomplete Suggestion">
+            <keyboard-shortcut keymap="$default" first-keystroke="ESCAPE"/>
+        </action>
+
+        <action id="com.github.khulnasoft.devscodeintellijextension.autocomplete.PartialAcceptAutocompleteAction"
+                class="com.github.khulnasoft.devscodeintellijextension.autocomplete.PartialAcceptAutocompleteAction"
+                text="Partial Accept Autocomplete Suggestion"
+                description="Partial Accept Autocomplete Suggestion">
+            <keyboard-shortcut first-keystroke="control alt RIGHT" keymap="$default"/>
+            <keyboard-shortcut first-keystroke="alt meta RIGHT" keymap="Mac OS X"/>
+        </action>
+    </actions>
+</idea-plugin>
