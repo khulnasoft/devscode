@@ -1,0 +1,26 @@
+{
+  "name": "@khulnasoft/openai-adapters",
+  "version": "1.0.9",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
+    "build": "tsc"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@azure/openai": "^1.0.0-beta.12",
+    "@khulnasoft/config-types": "^1.0.13",
+    "@khulnasoft/fetch": "^1.0.3",
+    "node-fetch": "^3.3.2",
+    "openai": "^4.67.0"
+  },
+  "devDependencies": {
+    "@types/follow-redirects": "^1.14.4",
+    "cross-env": "^7.0.3",
+    "ts-jest": "^29.2.3",
+    "ts-node": "^10.9.2"
+  }
+}
